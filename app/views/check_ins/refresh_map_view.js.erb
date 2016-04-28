@@ -1,0 +1,14 @@
+map.removeLayer(markers);
+
+var markers = L.markerClusterGroup();
+markers.clearLayers();
+var checkIns = [<%= @check_ins.collect{|check_in| "[#{check_in.latitude},#{check_in.longitude}]" }.join(", ") %>];
+
+for (var i = 0; i < checkIns.length; i++) {
+	marker = new L.marker([checkIns[i][0],checkIns[i][1]]);
+	markers.addLayer(marker);
+}
+
+map.addLayer(markers);
+
+$('\#loader').hide();

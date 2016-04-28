@@ -1,0 +1,43 @@
+<div class="col-lg-12">
+  <ol class="breadcrumb">
+    <li class="active"><i class="fa fa-cogs"></i> Section Configurations</li>
+  </ol>
+</div>
+
+<div class="col-lg-9">
+  <%- model_class = SectionConfiguration -%>
+  <table class="table table-striped small">
+    <thead>
+      <tr>
+        <th><%= model_class.human_attribute_name(:id) %></th>
+        <th><%= model_class.human_attribute_name(:color_desc) %></th>
+        <th><%= model_class.human_attribute_name(:configuration_code) %></th>
+        <th><%= model_class.human_attribute_name(:active) %></th>
+        <th><%= model_class.human_attribute_name(:tariff_code) %></th>
+        <th><%= model_class.human_attribute_name(:schedule_code) %></th>
+        <th><%= model_class.human_attribute_name(:configuration_type_code) %></th>
+        <th><%= model_class.human_attribute_name(:description) %></th>
+        <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @section_configurations.each do |section_configuration| %>
+        <tr>
+          <td><%= link_to section_configuration.id, section_configuration_path(section_configuration) %></td>
+          <td><%= section_configuration.color_desc %></td>
+          <td><%= section_configuration.configuration_code %></td>
+          <td><%= section_configuration.active %></td>
+          <td><%= section_configuration.tariff_code %></td>
+          <td><%= section_configuration.schedule_code %></td>
+          <td><%= section_configuration.configuration_type_code %></td>
+          <td><%= section_configuration.description %></td>
+          <td>
+            <%= link_to "Details", section_configuration_path(section_configuration), :class => 'btn btn-default btn-xs' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= render :partial => "sidebar" %>

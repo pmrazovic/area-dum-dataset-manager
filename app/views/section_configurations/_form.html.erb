@@ -1,0 +1,171 @@
+<%= form_for @section_configuration, :html => { :class => "form-horizontal section_configuration" } do |f| %>
+
+    <% if @section_configuration.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@section_configuration.errors.count, "error") %> prohibited this section_configuration from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @section_configuration.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :tariff_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :tariff_id, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:tariff_id]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :schedule_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :schedule_id, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:schedule_id]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :configuration_type_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :configuration_type_id, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:configuration_type_id]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :color_desc, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :color_desc, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:color_desc]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :color_desc_pda, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :color_desc_pda, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:color_desc_pda]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :configuration_code, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :configuration_code, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:configuration_code]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :active, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :active, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:active]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :tariff_code, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :tariff_code, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:tariff_code]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :schedule_code, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :schedule_code, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:schedule_code]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :configuration_type_code, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :configuration_type_code, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:configuration_type_code]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :description, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :description, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:description]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :tarrif_description_short, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :tarrif_description_short, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:tarrif_description_short]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :schedule_description_short, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :schedule_description_short, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:schedule_description_short]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :include_holidays, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :include_holidays, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:include_holidays]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :only_parking, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :only_parking, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:only_parking]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :fraction_type, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :fraction_type, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:fraction_type]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :fraction_price, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :fraction_price, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:fraction_price]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :max_time, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :max_time, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:max_time]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :price_per_hour, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :price_per_hour, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:price_per_hour]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :price_per_minute, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :price_per_minute, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:price_per_minute]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :price_per_second, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :price_per_second, :class => 'form-control' %>
+    </div>
+    <%= error_span(@section_configuration[:price_per_second]) %>
+  </div>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            section_configurations_path, :class => 'btn btn-default' %>
+
+<% end %>

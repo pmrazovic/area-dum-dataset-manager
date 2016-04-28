@@ -1,0 +1,9 @@
+<div class="col-lg-3">
+  <div class="list-group">
+    <%= link_to '<i class="fa fa-list"></i> Check-In list'.html_safe, check_ins_path, :class => "list-group-item #{'active' if action_name == 'index'}" %>
+    <%= link_to '<i class="fa fa-upload"></i> Import new CSV'.html_safe, import_csv_check_ins_path, :class => "list-group-item #{'active' if action_name == 'import_csv'}" %>
+     <%= link_to '<i class="fa fa-trash-o"></i> Delete all'.html_safe, delete_all_check_ins_path, :class => "list-group-item #{'active' if action_name == 'delete_all'}" %>
+    <%= link_to '<i class="fa fa-globe"></i> Show on map'.html_safe, show_on_map_check_ins_path, :class => "list-group-item #{'active' if action_name == 'show_on_map'}" %>
+  </div>
+  <p class="pull-right text-muted small">&copy; DAMA UPC</p>
+</div><!--/span-->

@@ -1,0 +1,179 @@
+<div class="col-lg-12">
+  <ol class="breadcrumb">
+    <li><%= link_to '<i class="fa fa-cogs"></i> Section Configurations'.html_safe, section_configurations_path %></li>
+    <li class="active">Configuration <%= @section_configuration.id %></li>
+  </ol>
+</div>
+<div class="col-lg-12">
+  <%- model_class = SectionConfiguration -%>
+  <table class="table table-bordered small">
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:tariff_id) %>
+      </th>
+      <td>
+        <%= @section_configuration.tariff_id %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:schedule_id) %>
+      </th>
+      <td>
+        <%= @section_configuration.schedule_id %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:configuration_type_id) %>
+      </th>
+      <td>
+        <%= @section_configuration.configuration_type_id %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:color_desc) %>
+      </th>
+      <td>
+        <%= @section_configuration.color_desc %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:color_desc_pda) %>
+      </th>
+      <td>
+        <%= @section_configuration.color_desc_pda %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:configuration_code) %>
+      </th>
+      <td>
+        <%= @section_configuration.configuration_code %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:active) %>
+      </th>
+      <td>
+        <%= @section_configuration.active %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:tariff_code) %>
+      </th>
+      <td>
+        <%= @section_configuration.tariff_code %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:schedule_code) %>
+      </th>
+      <td>
+        <%= @section_configuration.schedule_code %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:configuration_type_code) %>
+      </th>
+      <td>
+        <%= @section_configuration.configuration_type_code %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:description) %>
+      </th>
+      <td>
+        <%= @section_configuration.description %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:tarrif_description_short) %>
+      </th>
+      <td>
+        <%= @section_configuration.tarrif_description_short %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:schedule_description_short) %>
+      </th>
+      <td>
+        <%= @section_configuration.schedule_description_short %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:include_holidays) %>
+      </th>
+      <td>
+        <%= @section_configuration.include_holidays %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:only_parking) %>
+      </th>
+      <td>
+        <%= @section_configuration.only_parking %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:fraction_type) %>
+      </th>
+      <td>
+        <%= @section_configuration.fraction_type %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:fraction_price) %>
+      </th>
+      <td>
+        <%= @section_configuration.fraction_price %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:max_time) %>
+      </th>
+      <td>
+        <%= @section_configuration.max_time %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:price_per_hour) %>
+      </th>
+      <td>
+        <%= @section_configuration.price_per_hour %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:price_per_minute) %>
+      </th>
+      <td>
+        <%= @section_configuration.price_per_minute %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:price_per_second) %>
+      </th>
+      <td>
+        <%= @section_configuration.price_per_second %>
+      </td>
+    </tr>
+  </table>
+</div>

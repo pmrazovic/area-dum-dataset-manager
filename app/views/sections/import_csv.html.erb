@@ -1,0 +1,25 @@
+<div class="col-lg-12">
+  <ol class="breadcrumb">
+    <li><%= link_to '<i class="fa fa-road"></i> Sections'.html_safe, sections_path %></li>
+    <li class="active"><i class="fa fa-upload"></i> Import new CSV</li>
+  </ol>
+</div>
+
+<div class="col-lg-9">
+	<div class="alert alert-danger" role="alert">
+			<h4>Warning!</h4>
+			<p>New data will be imported to the database. Existing data can be overwritten!</p>
+	</div>
+	<%= form_tag({action: :process_csv}, multipart: true, :class => "form") do %>
+		<div class="form-group">
+		  <%= label :import_file, "Choose import CSV file" %>
+	 		<%= file_field_tag 'sections_csv' %>
+	 	</div>
+	 	<div class="form-group">
+	 		<%= submit_tag 'Submit', :class => "btn btn-sm btn-primary" %>
+	 		<%= link_to 'Cancel', sections_path, :class => "btn btn-sm btn-default" %>
+	 	</div>
+	<% end %>
+</div>
+
+<%= render :partial => "sidebar" %>

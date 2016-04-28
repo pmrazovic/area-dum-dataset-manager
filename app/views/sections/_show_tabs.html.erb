@@ -1,0 +1,5 @@
+<ul class="nav nav-tabs" style="margin-bottom: 30px;">
+  <li role="presentation" class="<%= 'active' if controller_name == 'sections' && action_name == 'show' %>"><%= link_to '<i class="fa fa-globe"></i> Map'.html_safe, @section %></li>
+  <li role="presentation" class="<%= 'active' if controller_name == 'sections' && action_name == 'show_per_time_slot' %>"><%= link_to '<i class="fa fa-clock-o"></i> Check-Ins per time of day'.html_safe, show_per_time_slot_section_path(@section) %></li>
+  <li role="presentation" class="<%= 'active' if controller_name == 'sections' && action_name == 'show_per_day_of_week' %>"><%= link_to '<i class="fa fa-calendar"></i> Check-Ins per day of week'.html_safe, show_per_day_of_week_section_path(@section) %></li>
+</ul>

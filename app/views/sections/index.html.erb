@@ -1,0 +1,45 @@
+<div class="col-lg-12">
+  <ol class="breadcrumb">
+    <li class="active"><i class="fa fa-road"></i> Sections</li>
+  </ol>
+</div>
+
+<div class="col-lg-9">
+  <%- model_class = Section -%>
+  <%= will_paginate @sections, :previous_label => 'Previous', :next_label => 'Next', :renderer => BootstrapPagination::Rails %>
+  <table class="table table-striped small">
+    <thead>
+      <tr>
+        <th><%= model_class.human_attribute_name(:id) %></th>
+        <th><%= model_class.human_attribute_name(:latitude) %></th>
+        <th><%= model_class.human_attribute_name(:longitude) %></th>
+        <th><%= model_class.human_attribute_name(:section_name) %></th>
+        <th><%= model_class.human_attribute_name(:authorized_spaces) %></th>
+        <th><%= model_class.human_attribute_name(:unavailable_spaces) %></th>
+        <th><%= model_class.human_attribute_name(:available_spaces) %></th>
+        <th><%= model_class.human_attribute_name(:section_configuration_id) %></th>
+        <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @sections.each do |section| %>
+        <tr>
+          <td><%= link_to section.id, section_path(section) %></td>
+          <td><%= section.latitude %></td>
+          <td><%= section.longitude %></td>
+          <td><%= section.section_name %></td>
+          <td><%= section.authorized_spaces %></td>
+          <td><%= section.unavailable_spaces %></td>
+          <td><%= section.available_spaces %></td>
+          <td><%= section.section_configuration_id %></td>
+          <td>
+            <%= link_to "Details", section_path(section), :class => 'btn btn-default btn-xs' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @sections, :previous_label => 'Previous', :next_label => 'Next', :renderer => BootstrapPagination::Rails %>
+</div>
+
+<%= render :partial => "sidebar" %>

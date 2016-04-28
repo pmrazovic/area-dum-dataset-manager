@@ -1,0 +1,68 @@
+<div class="col-lg-12">
+  <ol class="breadcrumb">
+    <li><%= link_to '<i class="fa fa-map-marker"></i> Check-Ins'.html_safe, check_ins_path %></li>
+    <li class="active">Check-In <%= @check_in.id %></li>
+  </ol>
+</div>
+
+<div class="col-lg-6">
+  <%- model_class = CheckIn -%>
+  <table class="table table-bordered small">
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <td><%= @check_in.id %></td>
+    </tr>
+    <tr>
+      <th><%= model_class.human_attribute_name(:deliverer_id) %></th>
+      <td><%= @check_in.deliverer_id %></td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:latitude) %>
+      </th>
+      <td>
+        <%= @check_in.latitude %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:longitude) %>
+      </th>
+      <td>
+        <%= @check_in.longitude %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:timestamp) %>
+      </th>
+      <td>
+        <%= @check_in.timestamp %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <%= model_class.human_attribute_name(:section_id) %>
+      </th>
+      <td>
+        <%= @check_in.section_id %>
+      </td>
+  </table>
+</div>
+
+<div class="col-lg-6">
+  <div style="width: 100%; height: 400px; margin-bottom: 20px;"  id="map"></div>
+</div>
+
+<script type='text/javascript'>
+  var map = new L.Map('map', {center: new L.LatLng(<%= @check_in.latitude %>, <%= @check_in.longitude %>), zoom: 16});
+  var googleLayer = new L.Google('ROADMAP');
+  map.addLayer(googleLayer);
+
+  L.marker([<%= @check_in.latitude %>, <%= @check_in.longitude %>]).addTo(map);                     
+
+  // zoom the map to the polyline
+  map.fitBounds(polyline.getBounds());
+
+
+</script>

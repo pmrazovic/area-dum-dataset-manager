@@ -1,0 +1,41 @@
+<div class="col-lg-12">
+  <ol class="breadcrumb">
+    <li class="active"><i class="fa fa-map-marker"></i> Check-Ins</li>
+  </ol>
+</div>
+
+<div class="col-lg-9">
+  <%- model_class = CheckIn -%>
+  <%= will_paginate @check_ins, :previous_label => 'Previous', :next_label => 'Next', :renderer => BootstrapPagination::Rails %>
+  <table class="table table-striped small">
+    <thead>
+      <tr>
+        <th><%= model_class.human_attribute_name(:id) %></th>
+        <th><%= model_class.human_attribute_name(:deliverer_id) %></th>
+        <th><%= model_class.human_attribute_name(:latitude) %></th>
+        <th><%= model_class.human_attribute_name(:longitude) %></th>
+        <th><%= model_class.human_attribute_name(:timestamp) %></th>
+        <th><%= model_class.human_attribute_name(:section_id) %></th>
+        <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @check_ins.each do |check_in| %>
+        <tr>
+          <td><%= link_to check_in.id, check_in_path(check_in) %></td>
+          <td><%= check_in.deliverer_id %></td>
+          <td><%= check_in.latitude %></td>
+          <td><%= check_in.longitude %></td>
+          <td><%= check_in.timestamp %></td>
+          <td><%= link_to check_in.section_id.to_s, section_path(check_in.section_id) %></td>
+          <td>
+            <%= link_to "Details", check_in_path(check_in), :class => 'btn btn-default btn-xs' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @check_ins, :previous_label => 'Previous', :next_label => 'Next', :renderer => BootstrapPagination::Rails %>
+</div>
+
+<%= render :partial => "sidebar" %>

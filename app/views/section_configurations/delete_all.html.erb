@@ -1,0 +1,19 @@
+<div class="col-lg-12">
+  <ol class="breadcrumb">
+    <li><%= link_to '<i class="fa fa-cogs"></i> Section Configurations'.html_safe, section_configurations_path %></li>
+    <li class="active"><i class="fa fa-trash-o"></i> Delete all</li>
+  </ol>
+</div>
+
+<div class="col-lg-9">
+	<div class="alert alert-danger" role="alert">
+			<h4>Warning!</h4>
+			<p>All section configuration will be deleted! This action cannot be revoked!</p>
+			<br/>
+			<a>
+				<%= link_to '<i class="fa fa-trash-o"></i> Delete all'.html_safe, confirm_delete_all_section_configurations_path, :class => "btn btn-default", :method => :post %>
+			</a>
+	</div>
+</div>
+
+<%= render :partial => "sidebar" %>

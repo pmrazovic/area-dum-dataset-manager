@@ -1,0 +1,8 @@
+<div class="col-lg-3">
+  <div class="list-group">
+    <%= link_to '<i class="fa fa-list"></i> Section list'.html_safe, sections_path, :class => "list-group-item #{'active' if action_name == 'index'}" %>
+    <%= link_to '<i class="fa fa-upload"></i> Import new CSV'.html_safe, import_csv_sections_path, :class => "list-group-item #{'active' if action_name == 'import_csv'}" %>
+     <%= link_to '<i class="fa fa-trash-o"></i> Delete all'.html_safe, delete_all_sections_path, :class => "list-group-item #{'active' if action_name == 'delete_all'}" %>
+  </div>
+  <p class="pull-right text-muted small">&copy; DAMA UPC</p>
+</div><!--/span-->

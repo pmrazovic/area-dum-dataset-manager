@@ -1,0 +1,131 @@
+<%- model_class = Section -%>
+<table class="table table-bordered small">
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:latitude) %>
+    </th>
+    <td>
+      <%= @section.latitude %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:longitude) %>
+    </th>
+    <td>
+      <%= @section.longitude %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:dum_zone_id) %>
+    </th>
+    <td>
+      <%= @section.dum_zone_id %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:section_name) %>
+    </th>
+    <td>
+      <%= @section.section_name %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:street_id) %>
+    </th>
+    <td>
+      <%= @section.street_id %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:street_no) %>
+    </th>
+    <td>
+      <%= @section.street_no %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:section_type_id) %>
+    </th>
+    <td>
+      <%= @section.section_type_id %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:authorized_spaces) %>
+    </th>
+    <td>
+      <%= @section.authorized_spaces %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:unavailable_spaces) %>
+    </th>
+    <td>
+      <%= @section.unavailable_spaces %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:available_spaces) %>
+    </th>
+    <td>
+      <%= @section.available_spaces %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:section_configuration_id) %>
+    </th>
+    <td>
+      <%= link_to "Configuration #{@section.section_configuration_id}", section_configuration_path(@section.section_configuration_id) %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:district_id) %>
+    </th>
+    <td>
+      <%= @section.district_id %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:neighbourhood_id) %>
+    </th>
+    <td>
+      <%= @section.neighbourhood_id %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%= model_class.human_attribute_name(:regulatory_zone_id) %>
+    </th>
+    <td>
+      <%= @section.regulatory_zone_id %>
+    </td>
+  </tr>
+ <!-- <tr>
+    <th>
+      Total working day check-ins
+    </th>
+    <td class="active">
+      <%= @check_in_count %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Total weekend day check-ins
+    </th>
+    <td class="active">
+      <%= @check_in_count_weekend %>
+    </td>
+  </tr>     -->
+</table>
