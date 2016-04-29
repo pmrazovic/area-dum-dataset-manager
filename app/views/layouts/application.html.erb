@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "AreaDumDbManager" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "AreaDum Dataset" %></title>
     <%= csrf_meta_tags %>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -54,6 +54,19 @@
             <li class="<%= 'active' if controller_name == 'check_ins' %>"><%= link_to '<i class="fa fa-map-marker"></i>  Check-Ins'.html_safe, check_ins_path %></li>
             <li class="<%= 'active' if controller_name == 'sections' %>"><%= link_to '<i class="fa fa-road"></i> Sections'.html_safe, sections_path %></li>
             <li class="<%= 'active' if controller_name == 'section_configurations' %>"><%= link_to '<i class="fa fa-cogs"></i> Section Configurations'.html_safe, section_configurations_path %></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-user"></i>
+                <%= "#{current_user.email}" %> <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <%= link_to "<i class=\"fa fa-sign-out\"></i> Sign out".html_safe, destroy_user_session_path, :method => :delete %>
+                </li>
+              </ul>
+            </li>          
           </ul>
         </div>
       </div>
