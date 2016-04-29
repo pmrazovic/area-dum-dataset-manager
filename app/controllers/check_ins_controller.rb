@@ -1,3 +1,5 @@
+require 'csv'
+
 class CheckInsController < ApplicationController
   before_action :set_check_in, only: [:show, :edit, :update, :destroy]
 
@@ -67,7 +69,7 @@ class CheckInsController < ApplicationController
   def process_csv
     uploaded_file = params[:checkins_csv]
     batch,batch_size = [], 1_000 
-    CSV.foreach(uploaded_file.path, headers: true, encoding:'iso-8859-1:utf-8') do |row|
+    CSV.foreach(uploaded_file.path, headers: true) do |row|
       new_check_in = CheckIn.new(:latitude => row[4].to_f,
                                  :longitude => row[5].to_f,
                                  :timestamp => DateTime.strptime(row[6], '%d-%m-%Y %H:%M:%S'),
