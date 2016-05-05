@@ -25,6 +25,10 @@ Rails.application.routes.draw do
       post 'refresh_per_time_slot'
       get 'show_per_day_of_week'
       post 'refresh_per_day_of_week'
+      get 'show_avg_per_time_slot'
+      post 'refresh_avg_per_time_slot'
+      get 'show_avg_per_day_of_week'
+      post 'refresh_avg_per_day_of_week'
     end
   end
   resources :section_configurations do

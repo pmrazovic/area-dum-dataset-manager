@@ -31,7 +31,7 @@
           <td><%= section.authorized_spaces %></td>
           <td><%= section.unavailable_spaces %></td>
           <td><%= section.available_spaces %></td>
-          <td><%= section.section_configuration_id %></td>
+          <td><%= link_to "<i class=\"fa fa-cogs\"></i> #{section.section_configuration_id}".html_safe, section_configuration_path(section.section_configuration_id) %></td>
           <td>
             <%= link_to "Details", section_path(section), :class => 'btn btn-default btn-xs' %>
           </td>

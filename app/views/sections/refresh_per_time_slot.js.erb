@@ -1,16 +1,11 @@
-data = {
-  labels: [<%= @stats.keys.collect{|key| "'#{@stats[key][:desc]}'"}.join(", ").html_safe %>],
+var data = {
+  labels: [<%= @stats.collect{|row| "'#{row['time_slot_start']}-#{row['time_slot_end']}'"}.join(", ").html_safe %>],
   datasets: [
       {
-          label: "Working day",
+          label: "# Check-In",
           fill: false,
-          lineTension: 0.1,
           backgroundColor: "rgba(75,192,192,0.4)",
           borderColor: "rgba(75,192,192,1)",
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
           pointBorderColor: "rgba(75,192,192,1)",
           pointBackgroundColor: "#fff",
           pointBorderWidth: 1,
@@ -18,24 +13,7 @@ data = {
           pointHoverBackgroundColor: "rgba(75,192,192,1)",
           pointHoverBorderColor: "rgba(220,220,220,1)",
           pointHoverBorderWidth: 2,
-          pointRadius: 1,
-          pointHitRadius: 10,
-          data: [<%= @stats.keys.collect{|key| "#{@stats[key][:count].round(2)}"}.join(", ").html_safe %>],
-          yAxisID: "y-axis-0",
-      },
-      {
-          label: "Weekend",
-          fill: false,
-          backgroundColor: "rgba(255,205,86,0.4)",
-          borderColor: "rgba(255,205,86,1)",
-          pointBorderColor: "rgba(255,205,86,1)",
-          pointBackgroundColor: "#fff",
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: "rgba(255,205,86,1)",
-          pointHoverBorderColor: "rgba(255,205,86,1)",
-          pointHoverBorderWidth: 2,
-          data: [<%= @stats_weekend.keys.collect{|key| "#{@stats_weekend[key][:count].round(2)}"}.join(", ").html_safe %>]
+          data: [<%= @stats.collect{|row| "#{row['total'].to_i}"}.join(", ").html_safe %>]
       }
   ]
 };

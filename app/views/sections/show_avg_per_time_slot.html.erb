@@ -2,10 +2,12 @@
   <ol class="breadcrumb">
     <li><%= link_to '<i class="fa fa-road"></i> Sections'.html_safe, sections_path %></li>
     <li><%= link_to "<i class=\"fa fa-globe\"></i> #{@section.section_name}".html_safe, @section %></li>
-    <li class="active"><i class="fa fa-bar-chart-o"></i> Total number of check-ins per day of week</li>
+    <li class="active"><i class="fa fa-bar-chart-o"></i> Average number of check-ins per time slots</li>
   </ol>
+
   <%= render :partial => 'show_tabs' %>
-  <%= form_tag({action: :refresh_per_day_of_week}, :class => "form", :remote => true) do %>
+
+  <%= form_tag({action: :refresh_avg_per_time_slot}, :class => "form", :remote => true) do %>
     <div class='col-sm-3'>
       <div class="form-group">
         <%= label :start_date, "Start date", :class => "small" %>
@@ -25,13 +27,19 @@
         </div>
       </div>
     </div>
-    <div class='col-sm-3'>
+    <div class='col-sm-2'>
       <div class="form-group">
-        <%= label :plot_type, "Plot type", :class => "small" %>
-        <%= select_tag :plot_type, options_for_select([["Line",1],["Bar", 0]],0), :class => "form-control input-sm" %>
+        <%= label :time_slot_size, "Time slot size", :class => "small" %>
+        <%= select_tag :time_slot_size, options_for_select([["10 min",10],["15 min", 15],["20 min",20],["30 min",30],["60 min",60]],30), :class => "form-control input-sm" %>
       </div>
     </div>
-    <div class='col-sm-3'>
+    <div class='col-sm-2'>
+      <div class="form-group">
+        <%= label :day_of_week, "Day of week", :class => "small" %>
+        <%= select_tag :day_of_week, options_for_select([["Monday","1"],["Tuesday", "2"],["Wednesday","3"],["Thursday","4"],["Friday","5"],["Saturday","6"],["Sunday","0"],["Mon - Fri","1,2,3,4,5"],["Sat - Sun","0,6"]],"1,2,3,4,5"), :class => "form-control input-sm" %>
+      </div>
+    </div>
+    <div class='col-sm-2'>
       <div class="form-group">
         <%= button_tag(:type => "submit", :class => "btn btn-sm btn-primary", :style => "margin-top: 24px;", :onclick => "$('\#loader').show();") do %>
           <i class="fa fa-refresh"></i> Refresh
@@ -82,10 +90,10 @@
   });
 
   var data = {
-    labels: [<%= @stats.collect{|row| "'#{row['day_name']}'"}.join(", ").html_safe %>],
+    labels: [<%= @stats.collect{|row| "'#{row['time_slot_start']}-#{row['time_slot_end']}'"}.join(", ").html_safe %>],
     datasets: [
         {
-          label: "# Check-In",
+          label: "mean",
           fill: false,
           backgroundColor: "rgba(75,192,192,0.4)",
           borderColor: "rgba(75,192,192,1)",
@@ -96,16 +104,50 @@
           pointHoverBackgroundColor: "rgba(75,192,192,1)",
           pointHoverBorderColor: "rgba(220,220,220,1)",
           pointHoverBorderWidth: 2,
-          data: [<%= @stats.collect{|row| "#{row['total'].to_i}"}.join(", ").html_safe %>]
+          data: [<%= @stats.collect{|row| "#{row['mean'].to_f.round(4)}"}.join(", ").html_safe %>]
+        },
+        {
+          label: "mean+stdv",
+          fill: false,
+          backgroundColor: "rgba(75,192,192,0.4)",
+          borderColor: "rgba(75,192,192,1)",
+          pointBorderColor: "rgba(75,192,192,1)",
+          borderWidth: 1,
+          borderDash: [5,3],
+          pointBackgroundColor: "#fff",
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(75,192,192,1)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointHoverBorderWidth: 2,
+          data: [<%= @stats.collect{|row| "#{(row['mean'].to_f + row['stdev'].to_f).round(4)}"}.join(", ").html_safe %>]
+        },
+        {
+          label: "mean-stdv",
+          fill: false,
+          backgroundColor: "rgba(75,192,192,0.4)",
+          borderColor: "rgba(75,192,192,1)",
+          pointBorderColor: "rgba(75,192,192,1)",
+          borderWidth: 1,
+          borderDash: [5,3],
+          pointBackgroundColor: "#fff",
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(75,192,192,1)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointHoverBorderWidth: 2,
+          data: [<%= @stats.collect{|row| "#{(row['mean'].to_f - row['stdev'].to_f) < 0.0 ? 0.0 : (row['mean'].to_f - row['stdev'].to_f).round(4)}"}.join(", ").html_safe %>]
         }
     ]
   };
 
   var ctx = $("#chart");
   var myLineChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: data
   });
 
 
 </script>
+
+

@@ -1,0 +1,61 @@
+var data = {
+  labels: [<%= @stats.collect{|row| "'#{row['day_name']}'"}.join(", ").html_safe %>],
+  datasets: [
+      {
+        label: "mean",
+        fill: false,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        data: [<%= @stats.collect{|row| "#{row['mean'].to_f.round(4)}"}.join(", ").html_safe %>]
+      },
+      {
+        label: "mean+stdv",
+        fill: false,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        pointBorderColor: "rgba(75,192,192,1)",
+        borderWidth: 1,
+        borderDash: [5,3],
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        data: [<%= @stats.collect{|row| "#{(row['mean'].to_f + row['stdev'].to_f).round(4)}"}.join(", ").html_safe %>]
+      },
+      {
+        label: "mean-stdv",
+        fill: false,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        pointBorderColor: "rgba(75,192,192,1)",
+        borderWidth: 1,
+        borderDash: [5,3],
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        data: [<%= @stats.collect{|row| "#{(row['mean'].to_f - row['stdev'].to_f) < 0.0 ? 0.0 : (row['mean'].to_f - row['stdev'].to_f).round(4)}"}.join(", ").html_safe %>]
+      }
+  ]
+};
+
+myLineChart.destroy();
+
+ctx = $("#chart");
+myLineChart = new Chart(ctx, {
+  type: 'line',
+  data: data
+});
+
+$('\#loader').hide();

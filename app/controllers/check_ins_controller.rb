@@ -98,11 +98,11 @@ class CheckInsController < ApplicationController
   end
 
   def refresh_map_view
-    start_datetime = DateTime.strptime(params[:start_datetime], '%Y-%m-%d %H:%M')
-    end_datetime = DateTime.strptime(params[:end_datetime], '%Y-%m-%d %H:%M')
+    start_date = Date.strptime(params[:start_date], '%Y-%m-%d')
+    end_date = Date.strptime(params[:end_date], '%Y-%m-%d')
 
     if params[:deliverer_id].blank?
-      @check_ins = CheckIn.where("timestamp > ? and timestamp < ?", start_datetime, end_datetime)
+      @check_ins = CheckIn.where("timestamp > ? and timestamp < ?", start_date, end_date)
     else
       deliverer_id = params[:deliverer_id].to_i
       @check_ins = []

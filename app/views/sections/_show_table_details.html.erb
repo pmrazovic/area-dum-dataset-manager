@@ -85,7 +85,7 @@
       <%= model_class.human_attribute_name(:section_configuration_id) %>
     </th>
     <td>
-      <%= link_to "Configuration #{@section.section_configuration_id}", section_configuration_path(@section.section_configuration_id) %>
+      <%= link_to "<i class=\"fa fa-cogs\"></i> Configuration #{@section.section_configuration_id}".html_safe, section_configuration_path(@section.section_configuration_id) %>
     </td>
   </tr>
   <tr>

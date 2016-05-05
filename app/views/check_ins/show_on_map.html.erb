@@ -11,9 +11,9 @@
     <%= form_tag({action: :refresh_map_view}, :class => "form", :remote => true) do %>
       <div class='col-sm-3'>
         <div class="form-group">
-          <%= label :start_time, "Start date and time", :class => "small" %>
-          <div class="input-group date" id="startDatetimePicker">
-            <%= text_field_tag :start_datetime, nil, class: 'form-control input-sm', data: { date_format: 'YYYY-MM-DD HH:mm' } %>
+          <%= label :start_date, "Start date", :class => "small" %>
+          <div class="input-group date" id="from_date">
+            <%= text_field_tag :start_date, nil, :class => 'form-control input-sm' %>
             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
           </div>
         </div>
@@ -21,9 +21,9 @@
 
       <div class='col-sm-3'>
         <div class="form-group">
-          <%= label :finish_time, "Finish date and time", :class => "small" %>
-          <div class="input-group date" id="finishDatetimePicker">
-            <%= text_field_tag :end_datetime, nil, class: 'form-control input-sm', data: { date_format: 'YYYY-MM-DD HH:mm' } %>
+          <%= label :end_date, "End date", :class => "small" %>
+          <div class="input-group date" id="to_date">
+            <%= text_field_tag :end_date, nil, :class => 'form-control input-sm' %>
             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
           </div>
         </div>
@@ -40,25 +40,7 @@
         </div>
       </div>
     <% end %>
-    <script type="text/javascript">
-        $(function () {
-            $('.date').datetimepicker({
-                icons: {
-                    time: 'fa fa-clock-o',
-                    date: 'fa fa-calendar',
-                    up: 'fa fa-arrow-up',
-                    down: 'fa fa-arrow-down',
-                    previous: 'fa fa-chevron-left',
-                    next: 'fa fa-chevron-right',
-                    clear: 'fa fa-trash',
-                    close: 'fa fa-remove'
-                },
-                "defaultDate": new Date()
-            });
-        });
-    </script>
   </div>
-
 
   <div class="row">
     <div style="width: 100%; height: 400px; margin-bottom: 20px;"  id="map"></div>
@@ -68,8 +50,49 @@
 <%= render :partial => "sidebar" %>
 
 <script type='text/javascript'>
-  var map = new L.Map('map', {center: new L.LatLng(41.386842, 2.170502), zoom: 12});
+  var map = new L.Map('map', { center: new L.LatLng(41.386842, 2.170502), 
+                               zoom: 12,
+                               zoomControl: false});
+  L.control.zoom({
+     position:'topright'
+  }).addTo(map);
   var googleLayer = new L.Google('ROADMAP');
   map.addLayer(googleLayer);
   var markers = L.markerClusterGroup();
+</script>
+
+<script type="text/javascript">
+
+  $( document ).ready(function(){
+
+  var startDate = new Date('01/01/2014');
+  var FromEndDate = new Date();
+  var ToEndDate = new Date();
+
+  $('#from_date').datepicker({
+      format: "yyyy-mm-dd",
+      weekStart: 1,
+      startDate: '01/01/2014',
+      endDate: FromEndDate, 
+      autoclose: true
+  })
+      .on('changeDate', function(selected){
+          startDate = new Date(selected.date.valueOf());
+          //startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+          $('#to_date').datepicker('setStartDate', startDate);
+      }); 
+  $('#to_date')
+      .datepicker({
+          format: "yyyy-mm-dd",
+          weekStart: 1,
+          startDate: startDate,
+          endDate: ToEndDate,
+          autoclose: true
+      })
+      .on('changeDate', function(selected){
+          FromEndDate = new Date(selected.date.valueOf());
+          //FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
+          $('#from_date').datepicker('setEndDate', FromEndDate);
+      });
+  });
 </script>

@@ -1,7 +1,11 @@
 require 'csv'
+require 'statistic_queries'
 
 class SectionsController < ApplicationController
-  before_action :set_section, only: [:show, :show_per_time_slot, :refresh_per_time_slot, :show_per_day_of_week, :refresh_per_day_of_week, :edit, :update, :destroy]
+  before_action :set_section, only: [:show, :show_per_time_slot, :refresh_per_time_slot, :show_per_day_of_week, 
+                                     :refresh_per_day_of_week, :show_avg_per_time_slot, :refresh_avg_per_time_slot, 
+                                     :show_avg_per_day_of_week, :refresh_avg_per_day_of_week,
+                                     :edit, :update, :destroy]
 
   # GET /sections
   # GET /sections.json
@@ -17,137 +21,80 @@ class SectionsController < ApplicationController
   def show_per_time_slot
     @max_datetime = CheckIn.where(:section_id => @section.id).maximum(:timestamp)
     @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
-    @stats, @stats_weekend = get_per_time_slot_distibution(@min_datetime, @max_datetime, 30, false)
+    @stats = StatisticQueries::Sections::total_check_ins_per_time_slot(@section, @min_datetime, @max_datetime, 30, [1,2,3,4,5]).to_a
   end
 
   def refresh_per_time_slot
     time_slot_size = params[:time_slot_size].to_i
+    days_of_week = params[:day_of_week].split(",").map(&:to_i)
     @plot_type = params[:plot_type].to_i
-    if !params[:start_datetime].blank? && !params[:end_datetime].blank?
-      start_datetime = DateTime.strptime(params[:start_datetime], '%Y-%m-%d %H:%M')
-      end_datetime = DateTime.strptime(params[:end_datetime], '%Y-%m-%d %H:%M')
-      @stats, @stats_weekend = get_per_time_slot_distibution(start_datetime, end_datetime, time_slot_size, @plot_type)
+    if !params[:start_date].blank? && !params[:end_date].blank?
+      start_date = Date.strptime(params[:start_date], '%Y-%m-%d')
+      end_date = Date.strptime(params[:end_date], '%Y-%m-%d')
+      @stats = StatisticQueries::Sections::total_check_ins_per_time_slot(@section, start_date, end_date, time_slot_size, days_of_week).to_a
     else
       @max_datetime = CheckIn.where(:section_id => @section.id).maximum(:timestamp)
       @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
-      @stats, @stats_weekend = get_per_time_slot_distibution(@min_datetime, @max_datetime, time_slot_size, @plot_type)
+      @stats = StatisticQueries::Sections::total_check_ins_per_time_slot(@section, @min_datetime, @max_datetime, time_slot_size, days_of_week).to_a
     end
 
-  end
-
-  def get_per_time_slot_distibution(start_datetime, end_datetime, time_slot_size, probability)
-    check_in_count = CheckIn.where("section_id = ? AND 
-                                    extract(dow from timestamp) IN (1,2,3,4,5) AND
-                                    timestamp >= ? AND
-                                    timestamp <= ?", @section.id, start_datetime, end_datetime).count
-    check_in_count_weekend = CheckIn.where("section_id = ? AND 
-                                            extract(dow from timestamp) IN (0, 6) AND
-                                            timestamp >= ? AND
-                                            timestamp <= ?", @section.id, start_datetime, end_datetime).count
-    stats = ActiveSupport::OrderedHash.new
-    stats_weekend = ActiveSupport::OrderedHash.new
-
-    (0..23).each do |hour|
-      (0..60/time_slot_size-1).each do |hour_slot|
-        if hour_slot != 60/time_slot_size-1
-          desc = "#{hour.to_s.rjust(2, "0")}:#{(time_slot_size*hour_slot).to_s.rjust(2, "0")}-#{hour.to_s.rjust(2, "0")}:#{(time_slot_size*(hour_slot+1)).to_s.rjust(2, "0")}"
-        else
-          desc = "#{hour.to_s.rjust(2, "0")}:#{(time_slot_size*hour_slot).to_s.rjust(2, "0")}-#{(hour+1).to_s.rjust(2, "0")}:00"
-        end
-        stats["#{hour}-#{hour_slot}"] = {:count => 0, :desc => desc}
-        stats_weekend["#{hour}-#{hour_slot}"] = {:count => 0, :desc => desc}
-      end
-    end
-
-    sql = "SELECT (extract(hour FROM timestamp)) AS hour,
-                  (extract(minute FROM timestamp)::int / #{time_slot_size}) AS hour_slot,
-                  count(*) AS total
-           FROM check_ins
-           WHERE section_id = #{@section.id} AND 
-                 extract(dow from timestamp) IN (1,2,3,4,5) AND
-                 timestamp >= TO_TIMESTAMP('#{start_datetime.strftime("%Y-%m-%d %H:%M")}', 'YYYY-MM-DD HH24:MI') AND
-                 timestamp <= TO_TIMESTAMP('#{end_datetime.strftime("%Y-%m-%d %H:%M")}', 'YYYY-MM-DD HH24:MI')
-           GROUP  BY 1, 2"
-
-    ActiveRecord::Base.connection.execute(sql).each do |row|
-      if probability == 1
-        stats["#{row['hour']}-#{row['hour_slot']}"][:count] = row["total"].to_f/check_in_count.to_f
-      else
-        stats["#{row['hour']}-#{row['hour_slot']}"][:count] = row["total"].to_i
-      end
-    end
-
-    sql = "SELECT (extract(hour FROM timestamp)) AS hour,
-                  (extract(minute FROM timestamp)::int / #{time_slot_size}) AS hour_slot,
-                  count(*) AS total
-           FROM check_ins
-           WHERE section_id = #{@section.id} AND extract(dow from timestamp) IN (0, 6) AND
-                 timestamp >= TO_TIMESTAMP('#{start_datetime.strftime("%Y-%m-%d %H:%M")}', 'YYYY-MM-DD HH24:MI') AND
-                 timestamp <= TO_TIMESTAMP('#{end_datetime.strftime("%Y-%m-%d %H:%M")}', 'YYYY-MM-DD HH24:MI')
-           GROUP  BY 1, 2"
-
-    ActiveRecord::Base.connection.execute(sql).each do |row|
-      if probability == 1
-        stats_weekend["#{row['hour']}-#{row['hour_slot']}"][:count] = row["total"].to_f/check_in_count_weekend.to_f
-      else
-        stats_weekend["#{row['hour']}-#{row['hour_slot']}"][:count] = row["total"].to_i
-      end
-    end
-
-    return [stats, stats_weekend]
   end
 
   def show_per_day_of_week
     @max_datetime = CheckIn.where(:section_id => @section.id).maximum(:timestamp)
     @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
-    @stats = get_per_day_of_week_distibution(@min_datetime, @max_datetime, false)
+    @stats = StatisticQueries::Sections::total_check_ins_per_day_of_week(@section, @min_datetime, @max_datetime).to_a
   end
 
   def refresh_per_day_of_week
     @plot_type = params[:plot_type].to_i
-    if !params[:start_datetime].blank? && !params[:end_datetime].blank?
-      start_datetime = DateTime.strptime(params[:start_datetime], '%Y-%m-%d %H:%M')
-      end_datetime = DateTime.strptime(params[:end_datetime], '%Y-%m-%d %H:%M')
-      @stats = get_per_day_of_week_distibution(start_datetime, end_datetime, @plot_type)
+    if !params[:start_date].blank? && !params[:end_date].blank?
+      start_date = Date.strptime(params[:start_date], '%Y-%m-%d')
+      end_date = Date.strptime(params[:end_date], '%Y-%m-%d')
+      @stats = StatisticQueries::Sections::total_check_ins_per_day_of_week(@section, start_date, end_date).to_a
     else
       @max_datetime = CheckIn.where(:section_id => @section.id).maximum(:timestamp)
       @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
-      @stats = get_per_day_of_week_distibution(@min_datetime, @max_datetime, @plot_type)
+      @stats = StatisticQueries::Sections::total_check_ins_per_day_of_week(@section, @min_datetime, @max_datetime).to_a
     end
   end
 
-  def get_per_day_of_week_distibution(start_datetime, end_datetime, probability)
-    check_in_count = CheckIn.where("section_id = ? AND 
-                                    timestamp >= ? AND
-                                    timestamp <= ?", @section.id, start_datetime, end_datetime).count
+  def show_avg_per_time_slot
+    @max_datetime = CheckIn.where(:section_id => @section.id).maximum(:timestamp)
+    @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
+    @stats = StatisticQueries::Sections::avg_check_ins_per_time_slot(@section, @min_datetime, @max_datetime, 30, [1,2,3,4,5]).to_a
+  end
 
-    stats = ActiveSupport::OrderedHash.new
-    stats["0"] = {:count => 0, :desc => "Sunday"}
-    stats["1"] = {:count => 0, :desc => "Monday"}
-    stats["2"] = {:count => 0, :desc => "Tuesday"}
-    stats["3"] = {:count => 0, :desc => "Wednesday"}
-    stats["4"] = {:count => 0, :desc => "Thursday"}
-    stats["5"] = {:count => 0, :desc => "Friday"}
-    stats["6"] = {:count => 0, :desc => "Saturday"}
-
-    sql = "SELECT extract(dow from timestamp) AS day_of_week,
-                  count(*) AS total
-           FROM check_ins
-           WHERE section_id = #{@section.id} AND
-                 timestamp >= TO_TIMESTAMP('#{start_datetime.strftime("%Y-%m-%d %H:%M")}', 'YYYY-MM-DD HH24:MI') AND
-                 timestamp <= TO_TIMESTAMP('#{end_datetime.strftime("%Y-%m-%d %H:%M")}', 'YYYY-MM-DD HH24:MI')
-           GROUP  BY day_of_week"
-
-    ActiveRecord::Base.connection.execute(sql).each do |row|
-      if probability == 1
-        stats[row['day_of_week']][:count] = row["total"].to_f/check_in_count.to_f
-      else
-        stats[row['day_of_week']][:count] = row["total"].to_i
-      end
+  def refresh_avg_per_time_slot
+    days_of_week = params[:day_of_week].split(",").map(&:to_i)
+    time_slot_size = params[:time_slot_size].to_i
+    if !params[:start_date].blank? && !params[:end_date].blank?
+      start_date = Date.strptime(params[:start_date], '%Y-%m-%d')
+      end_date = Date.strptime(params[:end_date], '%Y-%m-%d')
+      @stats = StatisticQueries::Sections::avg_check_ins_per_time_slot(@section, start_date, end_date, time_slot_size, days_of_week).to_a
+    else
+      @max_datetime = CheckIn.where(:section_id => @section.id).maximum(:timestamp)
+      @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
+      @stats = StatisticQueries::Sections::avg_check_ins_per_time_slot(@section, @min_datetime, @max_datetime, time_slot_size, days_of_week).to_a
     end
+  end
 
-    return stats
+  def show_avg_per_day_of_week
+    @max_datetime = CheckIn.where(:section_id => @section.id).maximum(:timestamp)
+    @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
+    @stats = StatisticQueries::Sections::avg_check_ins_per_day_of_week(@section, @min_datetime, @max_datetime).to_a
+  end
 
+  def refresh_avg_per_day_of_week
+    if !params[:start_date].blank? && !params[:end_date].blank?
+      start_date = Date.strptime(params[:start_date], '%Y-%m-%d')
+      end_date = Date.strptime(params[:end_date], '%Y-%m-%d')
+      @stats = StatisticQueries::Sections::avg_check_ins_per_day_of_week(@section, start_date, end_date).to_a
+    else
+      @max_datetime = CheckIn.where(:section_id => @section.id).maximum(:timestamp)
+      @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
+      @stats = StatisticQueries::Sections::avg_check_ins_per_day_of_week(@section, @min_datetime, @max_datetime).to_a
+    end
   end
 
   # GET /sections/new
