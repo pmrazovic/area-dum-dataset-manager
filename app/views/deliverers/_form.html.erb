@@ -1,0 +1,31 @@
+<%= form_for @deliverer, :html => { :class => "form-horizontal deliverer" } do |f| %>
+
+    <% if @deliverer.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@deliverer.errors.count, "error") %> prohibited this deliverer from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @deliverer.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :plate_number, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :plate_number, :class => 'form-control' %>
+    </div>
+    <%= error_span(@deliverer[:plate_number]) %>
+  </div>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            deliverers_path, :class => 'btn btn-default' %>
+
+<% end %>

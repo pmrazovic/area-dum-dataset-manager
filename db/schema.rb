@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160429200031) do
+ActiveRecord::Schema.define(version: 20160505182320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,10 @@ ActiveRecord::Schema.define(version: 20160429200031) do
   add_index "check_ins", ["section_id", "timestamp"], name: "index_check_ins_on_section_id_and_timestamp", using: :btree
   add_index "check_ins", ["section_id"], name: "index_check_ins_on_section_id", using: :btree
   add_index "check_ins", ["timestamp"], name: "index_check_ins_on_timestamp", using: :btree
+
+  create_table "deliverers", force: :cascade do |t|
+    t.string "plate_number"
+  end
 
   create_table "section_configurations", force: :cascade do |t|
     t.integer "tariff_id"
