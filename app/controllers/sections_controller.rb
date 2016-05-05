@@ -4,7 +4,7 @@ require 'statistic_queries'
 class SectionsController < ApplicationController
   before_action :set_section, only: [:show, :show_per_time_slot, :refresh_per_time_slot, :show_per_day_of_week, 
                                      :refresh_per_day_of_week, :show_avg_per_time_slot, :refresh_avg_per_time_slot, 
-                                     :show_avg_per_day_of_week, :refresh_avg_per_day_of_week,
+                                     :show_avg_per_day_of_week, :refresh_avg_per_day_of_week, :download_csv_reports,
                                      :edit, :update, :destroy]
 
   # GET /sections
@@ -95,6 +95,9 @@ class SectionsController < ApplicationController
       @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
       @stats = StatisticQueries::Sections::avg_check_ins_per_day_of_week(@section, @min_datetime, @max_datetime).to_a
     end
+  end
+
+  def download_csv_reports
   end
 
   # GET /sections/new

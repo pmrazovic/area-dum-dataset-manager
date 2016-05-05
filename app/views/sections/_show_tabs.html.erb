@@ -16,5 +16,5 @@
     </ul>
   </li>
   <li class="nav-divider"></li>
-  <li role="presentation" class="<%= 'active' if controller_name == 'sections' && action_name == 'download_csv_reports' %>"><%= link_to '<i class="fa fa-download"></i> Download CSV reports'.html_safe, "#" %></li>
+  <li role="presentation" class="<%= 'active' if controller_name == 'sections' && action_name == 'download_csv_reports' %>"><%= link_to '<i class="fa fa-download"></i> Download CSV reports'.html_safe, download_csv_reports_section_path(@section) %></li>
 </ul>
