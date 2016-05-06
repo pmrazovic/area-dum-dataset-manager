@@ -168,7 +168,8 @@ class SectionsController < ApplicationController
                                 :unavailable_spaces => row[8].to_i,
                                 :available_spaces => row[9].to_i,
                                 :section_configuration_id => row[10].to_i,
-                                :district_id => row[11].to_i,
+                                # District IDs not mach open data uless
+                                :district_id => row[11].to_i - 1,
                                 :neighbourhood_id => row[12].to_i,
                                 :regulatory_zone_id => row[13].to_i)
 

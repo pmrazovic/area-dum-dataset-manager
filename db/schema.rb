@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160505182320) do
+ActiveRecord::Schema.define(version: 20160506103703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,15 @@ ActiveRecord::Schema.define(version: 20160505182320) do
 
   create_table "deliverers", force: :cascade do |t|
     t.string "plate_number"
+  end
+
+  create_table "districts", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "neighbourhoods", force: :cascade do |t|
+    t.string  "name"
+    t.integer "district_id"
   end
 
   create_table "section_configurations", force: :cascade do |t|
@@ -73,6 +82,12 @@ ActiveRecord::Schema.define(version: 20160505182320) do
     t.integer "district_id"
     t.integer "neighbourhood_id"
     t.integer "regulatory_zone_id"
+  end
+
+  create_table "streets", force: :cascade do |t|
+    t.string "street_type"
+    t.string "official_name"
+    t.string "short_name"
   end
 
   create_table "users", force: :cascade do |t|

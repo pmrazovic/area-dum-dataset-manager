@@ -29,7 +29,7 @@
       <%= model_class.human_attribute_name(:section_name) %>
     </th>
     <td>
-      <%= @section.section_name %>
+      <i><%= @section.section_name %></i>
     </td>
   </tr>
   <tr>
@@ -37,7 +37,7 @@
       <%= model_class.human_attribute_name(:street_id) %>
     </th>
     <td>
-      <%= @section.street_id %>
+      <%= @section.street.official_name %>
     </td>
   </tr>
   <tr>
@@ -93,7 +93,7 @@
       <%= model_class.human_attribute_name(:district_id) %>
     </th>
     <td>
-      <%= @section.district_id %>
+      <%= @section.district.name %>
     </td>
   </tr>
   <tr>
@@ -101,7 +101,7 @@
       <%= model_class.human_attribute_name(:neighbourhood_id) %>
     </th>
     <td>
-      <%= @section.neighbourhood_id %>
+      <%= @section.neighbourhood.name %>
     </td>
   </tr>
   <tr>
