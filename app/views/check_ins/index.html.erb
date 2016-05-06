@@ -27,7 +27,10 @@
           <td><%= check_in.latitude %></td>
           <td><%= check_in.longitude %></td>
           <td><%= check_in.timestamp %></td>
-          <td><%= link_to "<i class=\"fa fa-road\"></i> #{check_in.section_id.to_s}".html_safe, section_path(check_in.section_id) %></td>
+          <td>
+            <% unless check_in.section.nil? %>
+              <%= link_to "<i class=\"fa fa-road\"></i> #{check_in.section.section_name}".html_safe, section_path(check_in.section_id) %></td>
+            <% end %>
           <td>
             <%= link_to "Details", check_in_path(check_in), :class => 'btn btn-default btn-xs' %>
           </td>

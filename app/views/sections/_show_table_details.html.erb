@@ -2,6 +2,14 @@
 <table class="table table-bordered small">
   <tr>
     <th>
+      <%= model_class.human_attribute_name(:id) %>
+    </th>
+    <td>
+      <%= @section.id %>
+    </td>
+  </tr>
+  <tr>
+    <th>
       <%= model_class.human_attribute_name(:latitude) %>
     </th>
     <td>
@@ -58,26 +66,15 @@
   </tr>
   <tr>
     <th>
-      <%= model_class.human_attribute_name(:authorized_spaces) %>
-    </th>
-    <td>
-      <%= @section.authorized_spaces %>
-    </td>
-  </tr>
-  <tr>
-    <th>
-      <%= model_class.human_attribute_name(:unavailable_spaces) %>
-    </th>
-    <td>
-      <%= @section.unavailable_spaces %>
-    </td>
-  </tr>
-  <tr>
-    <th>
       <%= model_class.human_attribute_name(:available_spaces) %>
     </th>
     <td>
-      <%= @section.available_spaces %>
+      <% @section.authorized_spaces.times do |sp|  %>
+        <span class="fa-stack small <%= sp < @section.available_spaces ? "text-primary" : "text-danger" %>">
+          <i class="fa fa-square-o fa-stack-2x"></i>
+          <i class="fa fa-truck fa-stack-1x"></i>
+        </span>
+      <% end %> (<%= @section.available_spaces %>/<%= @section.authorized_spaces %>)
     </td>
   </tr>
   <tr>

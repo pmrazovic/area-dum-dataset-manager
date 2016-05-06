@@ -10,13 +10,12 @@
   <table class="table table-striped small">
     <thead>
       <tr>
-        <th><%= model_class.human_attribute_name(:id) %></th>
+        <th><%= model_class.human_attribute_name(:section_name) %></th>
         <th><%= model_class.human_attribute_name(:latitude) %></th>
         <th><%= model_class.human_attribute_name(:longitude) %></th>
-        <th><%= model_class.human_attribute_name(:section_name) %></th>
-        <th><%= model_class.human_attribute_name(:authorized_spaces) %></th>
-        <th><%= model_class.human_attribute_name(:unavailable_spaces) %></th>
         <th><%= model_class.human_attribute_name(:available_spaces) %></th>
+        <th><%= model_class.human_attribute_name(:district) %></th>
+        <th><%= model_class.human_attribute_name(:neighbourhood) %></th>
         <th><%= model_class.human_attribute_name(:section_configuration_id) %></th>
         <th><%=t '.actions', :default => t("helpers.actions") %></th>
       </tr>
@@ -24,14 +23,15 @@
     <tbody>
       <% @sections.each do |section| %>
         <tr>
-          <td><%= link_to section.id, section_path(section) %></td>
+          <td><%= link_to section.section_name, section_path(section) %></td>
           <td><%= section.latitude %></td>
           <td><%= section.longitude %></td>
-          <td><%= section.section_name %></td>
-          <td><%= section.authorized_spaces %></td>
-          <td><%= section.unavailable_spaces %></td>
-          <td><%= section.available_spaces %></td>
-          <td><%= link_to "<i class=\"fa fa-cogs\"></i> #{section.section_configuration_id}".html_safe, section_configuration_path(section.section_configuration_id) %></td>
+          <td>
+            <b><%= section.available_spaces %>/<%= section.authorized_spaces %></b>
+          </td>
+          <td><%= section.district.name %></td>
+          <td><%= section.neighbourhood.name %></td>
+          <td><%= link_to "<i class=\"fa fa-cogs\"></i> Configuration #{section.section_configuration_id}".html_safe, section_configuration_path(section.section_configuration_id) %></td>
           <td>
             <%= link_to "Details", section_path(section), :class => 'btn btn-default btn-xs' %>
           </td>
