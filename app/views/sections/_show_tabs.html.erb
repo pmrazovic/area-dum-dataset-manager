@@ -3,7 +3,7 @@
 
 
   
-  <li class="dropdown <%= 'active' if controller_name == 'sections' && (action_name == 'show_per_time_slot' || action_name == 'show_per_day_of_week' || action_name == 'show_avg_per_time_slot' || action_name == 'show_avg_per_day_of_week') %>">
+  <li class="dropdown <%= 'active' if controller_name == 'sections' && (action_name == 'show_per_time_slot' || action_name == 'show_per_day_of_week' || action_name == 'show_avg_per_time_slot' || action_name == 'show_avg_per_day_of_week' || action_name == 'show_check_ins_time_series') %>">
     <a href="#" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i> Plots <span class="caret"></span></a>
     <ul class="dropdown-menu" role="menu">
 		  <li role="presentation" class="<%= 'active' if controller_name == 'sections' && action_name == 'show_per_time_slot' %>"><%= link_to '<b>Total number of check-ins</b> per time slots'.html_safe, show_per_time_slot_section_path(@section) %></li>
@@ -12,7 +12,11 @@
       <li role="presentation" class="divider"></li>
 
       <li role="presentation" class="<%= 'active' if controller_name == 'sections' && action_name == 'show_avg_per_time_slot' %>"><%= link_to '<b>Average number of check-ins</b> per time slots'.html_safe, show_avg_per_time_slot_section_path(@section) %></li>
-		  <li role="presentation" class="<%= 'active' if controller_name == 'sections' && action_name == 'show_avg_per_day_of_week' %>"><%= link_to '<b>Average number of check-ins</b> per day of week'.html_safe, show_avg_per_day_of_week_section_path(@section) %></li>
+      <li role="presentation" class="<%= 'active' if controller_name == 'sections' && action_name == 'show_avg_per_day_of_week' %>"><%= link_to '<b>Average number of check-ins</b> per day of week'.html_safe, show_avg_per_day_of_week_section_path(@section) %></li>
+
+      <li role="presentation" class="divider"></li>
+
+		  <li role="presentation" class="<%= 'active' if controller_name == 'sections' && action_name == 'show_check_ins_time_series' %>"><%= link_to 'Check-ins as <b>time series</b>'.html_safe, show_check_ins_time_series_section_path(@section) %></li>
     </ul>
   </li>
   <li class="nav-divider"></li>

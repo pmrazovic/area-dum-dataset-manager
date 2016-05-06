@@ -30,6 +30,8 @@ Rails.application.routes.draw do
       post 'refresh_avg_per_time_slot'
       get 'show_avg_per_day_of_week'
       post 'refresh_avg_per_day_of_week'
+      get 'show_check_ins_time_series'
+      post 'refresh_check_ins_time_series'
       get 'download_csv_reports'
     end
   end

@@ -5,6 +5,7 @@ class SectionsController < ApplicationController
   before_action :set_section, only: [:show, :show_per_time_slot, :refresh_per_time_slot, :show_per_day_of_week, 
                                      :refresh_per_day_of_week, :show_avg_per_time_slot, :refresh_avg_per_time_slot, 
                                      :show_avg_per_day_of_week, :refresh_avg_per_day_of_week, :download_csv_reports,
+                                     :show_check_ins_time_series, :refresh_check_ins_time_series,
                                      :edit, :update, :destroy]
 
   # GET /sections
@@ -94,6 +95,25 @@ class SectionsController < ApplicationController
       @max_datetime = CheckIn.where(:section_id => @section.id).maximum(:timestamp)
       @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
       @stats = StatisticQueries::Sections::avg_check_ins_per_day_of_week(@section, @min_datetime, @max_datetime).to_a
+    end
+  end
+
+  def show_check_ins_time_series
+    @max_datetime = CheckIn.where(:section_id => @section.id).maximum(:timestamp)
+    @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
+    @stats = StatisticQueries::Sections::check_ins_time_series(@section, @min_datetime, @max_datetime, 30).to_a
+  end
+
+  def refresh_check_ins_time_series
+    time_slot_size = params[:time_slot_size].to_i
+    if !params[:start_date].blank? && !params[:end_date].blank?
+      start_date = Date.strptime(params[:start_date], '%Y-%m-%d')
+      end_date = Date.strptime(params[:end_date], '%Y-%m-%d')
+      @stats = StatisticQueries::Sections::check_ins_time_series(@section, start_date, end_date, time_slot_size).to_a
+    else
+      @max_datetime = CheckIn.where(:section_id => @section.id).maximum(:timestamp)
+      @min_datetime = CheckIn.where(:section_id => @section.id).minimum(:timestamp)
+      @stats = StatisticQueries::Sections::check_ins_time_series(@section, @min_datetime, @max_datetime, time_slot_size).to_a
     end
   end
 
