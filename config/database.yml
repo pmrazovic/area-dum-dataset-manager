@@ -14,3 +14,13 @@ development:
   password: area_dum
   host: localhost
   port: 5432
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  pool: 5
+  database: area_dum
+  username: area_dum
+  password: area_dum
+  host: http://qeast.qeastsearch.com/
+  port: 5432
