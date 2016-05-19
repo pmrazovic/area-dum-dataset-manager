@@ -22,5 +22,5 @@ production:
   database: area_dum
   username: area_dum
   password: area_dum
-  host: http://qeast.qeastsearch.com/
+  host: qeast.qeastsearch.com
   port: 5432
