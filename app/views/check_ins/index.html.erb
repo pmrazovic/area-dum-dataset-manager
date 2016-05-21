@@ -23,13 +23,13 @@
       <% @check_ins.each do |check_in| %>
         <tr>
           <td><%= link_to check_in.id, check_in_path(check_in) %></td>
-          <td><%= link_to "<i class=\"fa fa-truck\"></i> #{check_in.deliverer_id.blank? ? 'Unknown' : check_in.deliverer_id.to_s}".html_safe, "#" %></td>
+          <td><%= link_to "<i class=\"fa fa-truck\"></i> #{check_in.deliverer_id.blank? ? 'Unknown' : check_in.deliverer_id.to_s}".html_safe, deliverer_path(check_in.deliverer_id) %></td>
           <td><%= check_in.latitude %></td>
           <td><%= check_in.longitude %></td>
           <td><%= check_in.timestamp %></td>
           <td>
-            <% unless check_in.section.nil? %>
-              <%= link_to "<i class=\"fa fa-road\"></i> #{check_in.section.section_name}".html_safe, section_path(check_in.section_id) %></td>
+            <% unless check_in.section_id.blank? %>
+              <%= link_to "<i class=\"fa fa-road\"></i> #{check_in.section_id}".html_safe, section_path(check_in.section_id) %></td>
             <% end %>
           <td>
             <%= link_to "Details", check_in_path(check_in), :class => 'btn btn-default btn-xs' %>
