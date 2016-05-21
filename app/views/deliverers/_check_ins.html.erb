@@ -15,8 +15,8 @@
         <td><%= check_in.latitude %></td>
         <td><%= check_in.longitude %></td>
         <td>
-          <% unless check_in.section.nil? %>
-            <%= link_to "<i class=\"fa fa-road\"></i> #{check_in.section.section_name}".html_safe, section_path(check_in.section_id) %></td>
+          <% unless check_in.section_id.blank? %>
+            <%= link_to "<i class=\"fa fa-road\"></i> #{check_in.section_id}".html_safe, section_path(check_in.section_id) %></td>
             <% end %>
         </td>
         <td><%= link_to "Details", check_in_path(check_in), :class => 'btn btn-default btn-xs' %></td>
