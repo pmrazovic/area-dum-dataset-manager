@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
-  resources :deliverers
+  resources :deliverers do
+    member do
+      post 'refresh_map_view'
+    end
+  end
   devise_for :users
   root 'check_ins#index'
 

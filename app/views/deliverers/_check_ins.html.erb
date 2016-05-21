@@ -1,0 +1,26 @@
+<table class="table table-striped small">
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Section</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @check_ins.each do |check_in| %>
+      <tr>
+        <td><%= check_in.timestamp %></td>
+        <td><%= check_in.latitude %></td>
+        <td><%= check_in.longitude %></td>
+        <td>
+          <% unless check_in.section.nil? %>
+            <%= link_to "<i class=\"fa fa-road\"></i> #{check_in.section.section_name}".html_safe, section_path(check_in.section_id) %></td>
+            <% end %>
+        </td>
+        <td><%= link_to "Details", check_in_path(check_in), :class => 'btn btn-default btn-xs' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

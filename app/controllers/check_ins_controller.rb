@@ -68,20 +68,33 @@ class CheckInsController < ApplicationController
 
   def process_csv
     uploaded_file = params[:checkins_csv]
-    batch,batch_size = [], 1_000 
-    CSV.foreach(uploaded_file.path, headers: true) do |row|
+    check_in_batch,deliverer_batch,batch_size = [], [], 1_000 
+    CSV.foreach(uploaded_file.path, {:headers => true, :col_sep => ";", :encoding => "ISO8859-1"}) do |row|
       new_check_in = CheckIn.new(:latitude => row[4].to_f,
                                  :longitude => row[5].to_f,
                                  :timestamp => DateTime.strptime(row[6], '%d-%m-%Y %H:%M:%S'),
-                                 :section_id => row[18].to_i)
-      batch << new_check_in
+                                 :section_id => row[16].to_i,
+                                 :deliverer_id => row[20].to_i)
+      check_in_batch << new_check_in
 
-      if batch.size >= batch_size
-        CheckIn.import batch
-        batch = []
+      unless (Deliverer.exists?(:id => row[20].to_i) || deliverer_batch.any?{|d| d.id == row[20].to_i})
+        new_deliverer = Deliverer.new(:plate_number => row[19].to_s)
+        new_deliverer.id = row[20].to_i
+        deliverer_batch << new_deliverer
+      end
+
+      if check_in_batch.size >= batch_size
+        CheckIn.import check_in_batch
+        check_in_batch = []
+      end
+
+      if deliverer_batch.size >= batch_size
+        Deliverer.import deliverer_batch
+        deliverer_batch = []
       end
     end
-    CheckIn.import batch
+    CheckIn.import check_in_batch
+    Deliverer.import deliverer_batch
 
     redirect_to :action => :index
   end

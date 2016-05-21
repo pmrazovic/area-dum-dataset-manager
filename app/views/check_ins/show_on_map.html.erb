@@ -9,7 +9,7 @@
 <div class="col-lg-9">
   <div class="row">
     <%= form_tag({action: :refresh_map_view}, :class => "form", :remote => true) do %>
-      <div class='col-sm-3'>
+      <div class='col-sm-4'>
         <div class="form-group">
           <%= label :start_date, "Start date", :class => "small" %>
           <div class="input-group date" id="from_date">
@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div class='col-sm-3'>
+      <div class='col-sm-4'>
         <div class="form-group">
           <%= label :end_date, "End date", :class => "small" %>
           <div class="input-group date" id="to_date">
@@ -28,13 +28,7 @@
           </div>
         </div>
       </div>
-      <div class='col-sm-3'>
-        <div class="form-group">
-          <%= label :deliverer, "Deliverer", :class => "small" %>
-          <%= select_tag :deliverer_id, options_for_select([["Nekaj_1",1],["Nekaj_2",2]]), :class => "form-control input-sm", :include_blank => "All" %>
-        </div>
-      </div>
-      <div class='col-sm-3'>
+      <div class='col-sm-4'>
         <div class="form-group">
           <%= submit_tag 'Refresh', :class => "btn btn-primary btn-sm", :style => "margin-top: 24px;", :onclick => "$('\#loader').show();" %><%= image_tag "loader.gif", :hidden => true, :id => "loader", :style => "width: 30px; margin-top: 24px; margin-left: 10px;" %>
         </div>
