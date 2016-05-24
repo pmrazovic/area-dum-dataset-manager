@@ -15,8 +15,12 @@
 </div>
 
 <script type='text/javascript'>
-  var map = new L.Map('map', {  center: new L.LatLng(41.386842, 2.170502), 
-                                zoom: 12,
+  var center = new L.LatLng(41.386842, 2.170502);
+  <% if @section.latitude != 0.0 && @section.longitude != 0.0 %>
+    center = new L.LatLng(<%= @section.latitude %>, <%= @section.longitude %>);
+  <% end %>
+  var map = new L.Map('map', {  center: center, 
+                                zoom: 16,
                                 zoomControl: false
   });
   L.control.zoom({
@@ -24,4 +28,7 @@
   }).addTo(map);
   var googleLayer = new L.Google('ROADMAP');
   map.addLayer(googleLayer);
+  <% if @section.latitude != 0.0 && @section.longitude != 0.0 %>
+    var marker = L.marker([<%= @section.latitude %>, <%= @section.longitude %>]).addTo(map);
+  <% end %>
 </script>

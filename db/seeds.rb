@@ -16,6 +16,7 @@ ActiveRecord::Base.transaction do
     Street.find_or_create_by(:id => row["STREET_ID"]) do |street|
 			street.official_name = row["OFFICIAL_NAME"]
 			street.short_name = row["SHORT_NAME"]
+      street.street_type = row["STREET_TYPE"]
 		end
   end
   puts "Streets imported!"

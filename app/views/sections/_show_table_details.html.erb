@@ -12,16 +12,16 @@
     <th>
       <%= model_class.human_attribute_name(:latitude) %>
     </th>
-    <td>
-      <%= @section.latitude %>
+    <td class="<%= 'danger' if @section.latitude == 0.0 %>">
+      <span class="<%= 'text-danger' if @section.latitude == 0.0 %>"><%= @section.latitude %></span>
     </td>
   </tr>
   <tr>
     <th>
       <%= model_class.human_attribute_name(:longitude) %>
     </th>
-    <td>
-      <%= @section.longitude %>
+    <td class="<%= 'danger' if @section.longitude == 0.0 %>">
+      <span class="<%= 'text-danger' if @section.longitude == 0.0 %>"><%= @section.longitude %></span>
     </td>
   </tr>
   <tr>
