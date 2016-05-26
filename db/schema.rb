@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160506103703) do
+ActiveRecord::Schema.define(version: 20160526093110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20160506103703) do
     t.decimal  "longitude"
     t.datetime "timestamp"
     t.integer  "section_id"
+    t.boolean  "is_holiday",   default: false
   end
 
   add_index "check_ins", ["deliverer_id", "timestamp"], name: "index_check_ins_on_deliverer_id_and_timestamp", using: :btree
