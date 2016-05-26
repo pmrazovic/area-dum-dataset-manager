@@ -35,6 +35,7 @@ gem 'leaflet-rails'
 
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap-datepicker-rails'
+gem 'geoutm'
 
 
 # Use ActiveModel has_secure_password
