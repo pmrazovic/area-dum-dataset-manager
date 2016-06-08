@@ -14,7 +14,13 @@
     </tr>
     <tr>
       <th><%= model_class.human_attribute_name(:deliverer_id) %></th>
-      <td><%= link_to "<i class=\"fa fa-truck\"></i> #{@check_in.deliverer_id.blank? ? 'Unknown' : @check_in.deliverer_id.to_s}".html_safe, "#" %></td>
+        <td>
+          <% if @check_in.deliverer_id.blank? %>
+            <i class="fa fa-truck"></i> Unknown</td>
+          <% else %>
+            <%= link_to "<i class=\"fa fa-truck\"></i> #{@check_in.deliverer_id.to_s}".html_safe, deliverer_path(@check_in.deliverer_id) %>
+          <% end %>
+        </td>
     </tr>
     <tr>
       <th>

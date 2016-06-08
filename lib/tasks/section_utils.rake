@@ -31,7 +31,7 @@ namespace :section_utils do
 
   desc "Calls Google geocode service and updates section coordinates"
   task update_coordinates_with_google_geocode: :environment do
-  	sections_to_geocode = Section.where("latitude = 0.0 OR longitude = 0.0")
+  	sections_to_geocode = Section.where("latitude = 0.0 OR longitude = 0.0 OR geocoded = TRUE")
 
   	sections_to_geocode.each do |section|
   		query_address = section.street.official_name.split(" ").join("+") + "+" + section.street_no.to_s + "+Barcelona"
@@ -42,7 +42,7 @@ namespace :section_utils do
       	if response.status[0] == "200"		
       		r = JSON.parse(response.read)
       		lat = r["results"][0]["geometry"]["location"]["lat"].to_f
-      		lon = r["results"][0]["geometry"]["location"]["lat"].to_f
+      		lon = r["results"][0]["geometry"]["location"]["lng"].to_f
       		section.latitude = lat
       		section.longitude = lon
       		section.geocoded = true

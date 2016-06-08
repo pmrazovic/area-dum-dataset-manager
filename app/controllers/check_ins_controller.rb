@@ -67,34 +67,40 @@ class CheckInsController < ApplicationController
   end
 
   def process_csv
-    uploaded_file = params[:checkins_csv]
-    check_in_batch,deliverer_batch,batch_size = [], [], 1_000 
-    CSV.foreach(uploaded_file.path, {:headers => true, :col_sep => ";", :encoding => "ISO8859-1"}) do |row|
-      new_check_in = CheckIn.new(:latitude => row[4].to_f,
-                                 :longitude => row[5].to_f,
-                                 :timestamp => DateTime.strptime(row[6], '%d-%m-%Y %H:%M:%S'),
-                                 :section_id => row[16].to_i,
-                                 :deliverer_id => row[20].to_i)
-      check_in_batch << new_check_in
+    list_of_duplicates = []
 
-      unless (Deliverer.exists?(:id => row[20].to_i) || deliverer_batch.any?{|d| d.id == row[20].to_i})
-        new_deliverer = Deliverer.new(:plate_number => row[19].to_s)
-        new_deliverer.id = row[20].to_i
-        deliverer_batch << new_deliverer
-      end
+    uploaded_file = params[:checkins_csv]
+    check_in_batch,batch_size = [], 1_000 
+    CSV.foreach(uploaded_file.path, {:headers => true, :col_sep => ",", :encoding => "iso-8859-1:utf-8"}) do |row|
+
+      new_check_in = CheckIn.new(:latitude => row["START_LATITUD"].to_f,
+                                 :longitude => row["START_LONGITUD"].to_f,
+                                 :timestamp => DateTime.strptime(row["FHSTARTREAL"], '%Y-%m-%d %H:%M:%S'),
+                                 :section_id => row["ID_TRAMO"].to_i)
+
+      #
+
+      #new_deliverer = Deliverer.where(:plate_number => row["COD_MATR"].to_s).first
+      #if new_deliverer.nil?
+      #  new_deliverer = Deliverer.new(:plate_number => row["COD_MATR"].to_s, :fleet_id => row["ID_USUARIO"].to_i)
+      #  new_deliverer.save!
+      #else
+      #  if new_deliverer.fleet_id != row["ID_USUARIO"].to_i
+      #    list_of_duplicates << new_deliverer.plate_number
+      #  end
+      #end
+
+      #new_check_in.deliverer = new_deliverer
+      
+      check_in_batch << new_check_in
 
       if check_in_batch.size >= batch_size
         CheckIn.import check_in_batch
         check_in_batch = []
       end
 
-      if deliverer_batch.size >= batch_size
-        Deliverer.import deliverer_batch
-        deliverer_batch = []
-      end
     end
     CheckIn.import check_in_batch
-    Deliverer.import deliverer_batch
 
     redirect_to :action => :index
   end

@@ -15,7 +15,8 @@
     <thead>
       <tr>
         <th>Deliverer ID</th>
-        <th>Unknown column</th>
+        <th>Plate number (anonymized)</th>
+        <th>Fleet Id</th>
         <th><%=t '.actions', :default => t("helpers.actions") %></th>
       </tr>
     </thead>
@@ -23,7 +24,8 @@
     	<% @deliverers.each do |deliverer| %>
     		<tr>
     			<td><%= deliverer.id %></td>
-    			<td><%= deliverer.plate_number %></td>
+          <td><%= deliverer.plate_number %></td>
+    			<td><%= deliverer.fleet_id %></td>
     			<td><%= link_to "<i class=\"fa fa-map-marker\"></i> Show check-ins".html_safe, deliverer_path(deliverer), :class => 'btn btn-default btn-xs' %></td>
     		</tr>
     	<% end %>
