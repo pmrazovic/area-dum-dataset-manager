@@ -53,6 +53,51 @@ namespace :section_utils do
 
   end
 
+  desc "Computes occupancy percentage of each depot"
+  task compute_occupancy: :environment do
+    dt = 5.minutes
+    duration = 10.minutes
+
+    start_datetime = Time.at((CheckIn.minimum("timestamp").to_f / dt).floor * dt).utc
+    end_datetime = Time.at((CheckIn.maximum("timestamp").to_f / dt).ceil * dt).utc
+    
+    time_series = Hash.new
+
+    counter = 0
+    total = Section.all.count
+    Section.all.order("id").each do |section|
+      counter += 1
+      print "\r#{(((counter).to_f/total)*100).round(2)}% complete"
+      current_time_slot = start_datetime
+      time_series[section] = Hash.new { |hash, key| hash[key] = 0 }
+      CheckIn.where("section_id = ?", section.id).all.each do |check_in|
+        start_time_slot = Time.at((check_in.timestamp.to_f / dt).ceil * dt).utc
+        curr_time_slot = start_time_slot
+        while curr_time_slot < start_time_slot + duration
+          if time_series[section][curr_time_slot] < section.authorized_spaces
+            time_series[section][curr_time_slot] += 1
+          end
+          curr_time_slot += dt
+        end
+      end
+    end
+
+    file = File.open("section_occupancies.csv", "w")
+    puts "\nPrinting result in output file..."
+    file.puts "depot_id,timestamp,occupancy,occupancy_norm"
+
+    counter = 0
+    Section.all.order("id").each do |section|
+      counter += 1
+      print "\r#{(((counter).to_f/total)*100).round(2)}% complete"
+      time_series[section].each do |time_slot, occupancy|
+        file.puts "#{section.id},#{time_slot.strftime("%Y-%m-%d %H:%M")},#{occupancy},#{occupancy.to_f/section.authorized_spaces}"
+      end
+    end
+
+    file.close
+
+  end
 
 
 end
